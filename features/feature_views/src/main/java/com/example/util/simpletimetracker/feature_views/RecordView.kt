@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker.feature_views
 
+import com.example.util.simpletimetracker.feature_views.extension.applySquircleOutline
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -25,7 +26,10 @@ class RecordView @JvmOverloads constructor(
 ) {
 
     private val binding = RecordViewLayoutBinding.inflate(layoutInflater, this)
-
+init {
+        val squircleRadius = resources.getDimension(R.dimen.record_type_card_corner_radius)
+        applySquircleOutline(squircleRadius)
+    }
     var itemName: String = ""
         set(value) {
             field = value
