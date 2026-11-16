@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker.feature_views
 
+import com.example.util.simpletimetracker.feature_views.extension.applySquircleOutline
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -33,6 +34,8 @@ class RecordTypeView @JvmOverloads constructor(
     private val gradientDrawable by lazy { AngleGradientDrawable() }
 
     init {
+        val squircleRadius = resources.getDimension(R.dimen.record_type_card_corner_radius)
+binding.containerRecordTypeItem.applySquircleOutline(squircleRadius)
         context
             .withStyledAttributes(
                 set = attrs,
