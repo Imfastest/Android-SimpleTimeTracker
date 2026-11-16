@@ -1,5 +1,6 @@
 package com.example.util.simpletimetracker.feature_views
 
+import com.example.util.simpletimetracker.feature_views.extension.applySquircleOutline
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
@@ -24,8 +25,8 @@ class CategoryView @JvmOverloads constructor(
 
     init {
         ContextCompat.getColor(context, R.color.black).let(::setCardBackgroundColor)
-        radius = resources.getDimensionPixelOffset(R.dimen.record_type_card_corner_radius)
-            .toFloat()
+        val squircleRadius = resources.getDimension(R.dimen.record_type_card_corner_radius)
+        applySquircleOutline(squircleRadius)
         // TODO doesn't work here for some reason, need to set in the layout
         cardElevation = resources.getDimensionPixelOffset(R.dimen.record_type_card_elevation)
             .toFloat()
