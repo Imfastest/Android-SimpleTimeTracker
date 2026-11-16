@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Outline
 import android.view.LayoutInflater
+import android.graphics.Path
+import android.os.Build
 import android.view.View
 import android.view.View.MeasureSpec
 import android.view.ViewGroup
@@ -246,6 +248,40 @@ private fun getViewOutlineProvider(
     return object : ViewOutlineProvider() {
         override fun getOutline(view: View, outline: Outline) {
             outline.setRoundRect(left, top, right, bottom, radiusDp.dpToPx().toFloat())
+        }fun View.applySquircleOutline(radiusPx: Float) {
+    outlineProvider = object : ViewOutlineProvider() {
+        override fun getOutline(view: View, outline: Outline) {
+            val w = view.width.toFloat()
+            val h = view.height.toFloat()
+            if (w <= 0f || h <= 0f) return
+
+            val r = radiusPx.coerceAtMost(minOf(w, h) / 2f)
+            // Apple 連續曲率參數：平滑延伸係數 1.28f 與控制點 0.45f
+            val smooth = r * 1.28f
+            val handle = r * 0.45f
+
+            val path = Path().apply {
+                moveTo(smooth, 0f)
+                lineTo(w - smooth, 0f)
+                cubicTo(w - handle, 0f, w, handle, w, smooth)
+                lineTo(w, h - smooth)
+                cubicTo(w, h - handle, w - handle, h, w - smooth, h)
+                lineTo(smooth, h)
+                cubicTo(handle, h, 0f, h - handle, 0f, h - smooth)
+                lineTo(0f, smooth)
+                cubicTo(0f, handle, handle, 0f, smooth, 0f)
+                close()
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                outline.setPath(path)
+            } else {
+                @Suppress("DEPRECATION")
+                outline.setConvexPath(path)
+            }
         }
+    }
+    clipToOutline = true
+}
     }
 }
