@@ -248,7 +248,11 @@ private fun getViewOutlineProvider(
     return object : ViewOutlineProvider() {
         override fun getOutline(view: View, outline: Outline) {
             outline.setRoundRect(left, top, right, bottom, radiusDp.dpToPx().toFloat())
-        }fun View.applySquircleOutline(radiusPx: Float) {
+        }
+    }
+}
+
+fun View.applySquircleOutline(radiusPx: Float) {
     outlineProvider = object : ViewOutlineProvider() {
         override fun getOutline(view: View, outline: Outline) {
             val w = view.width.toFloat()
@@ -282,6 +286,4 @@ private fun getViewOutlineProvider(
         }
     }
     clipToOutline = true
-}
-    }
 }
